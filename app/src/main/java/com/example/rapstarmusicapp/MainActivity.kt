@@ -12,7 +12,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _viewBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root, PlayerFragment.newInstance())
+        setContentView(viewBinding.root)
+
+
+        supportFragmentManager.beginTransaction()
+            .replace(viewBinding.fragmentContainer.id, PlayerFragment.newInstance())
             .commit()
 
 
