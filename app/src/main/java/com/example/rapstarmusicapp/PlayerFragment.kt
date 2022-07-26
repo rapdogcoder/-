@@ -1,6 +1,7 @@
 package com.example.rapstarmusicapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,17 @@ import com.example.rapstarmusicapp.MusicAdapter
 import com.example.rapstarmusicapp.PlayerModel
 import com.example.rapstarmusicapp.R
 import com.example.rapstarmusicapp.databinding.FragmentPlayerBinding
+import com.example.rapstarmusicapp.service.MusicDto
 import com.example.rapstarmusicapp.service.MusicModel
+import com.example.rapstarmusicapp.service.MusicService
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -55,9 +63,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         getVideoListFromServer()
     }
 
-    private fun getVideoListFromServer() {
-        TODO("Not yet implemented")
-    }
 
 
     @Suppress("ClickableViewAccessibility")
@@ -97,9 +102,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
-    private fun playMusic(nextMusic: MusicModel) {
-
-    }
 
 
     private fun initPlayView() {
@@ -194,9 +196,80 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             if(model.currentPosition == 1) return@setOnClickListener
 
             binding.playListGroup.isVisible = binding.playerViewGroup.isVisible.also{
-
+                binding.playerViewGroup.isVisible = binding.playListGroup.isVisible
             }
         }
     }
 
+    private fun getVideoListFromServer() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://run.mocky.io/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        retrofit.create(MusicService::class.java)
+            .also {
+                it.listMusics()
+                    .enqueue(object : Callback<MusicDto> {
+                        override fun onResponse(
+                            call: Call<MusicDto>,
+                            response: Response<MusicDto>
+                        ) {
+                            Log.d("PlayerFragment", "${response.body()}")
+
+                            response.body()?.let { musicDto ->
+                                model = musicDto.mapper()
+
+                                setMusicList(model.getAdapterModels())
+                                adapter.submitList(model.getAdapterModels())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<MusicDto>, t: Throwable) {
+
+                        }
+
+                    })
+            }
+    }
+
+    private fun setMusicList(modelList: List<MusicModel>){
+        player ?: return
+        context?.let{
+            player?.addMediaItems(modelList.map {
+                musicModel -> MediaItem.Builder()
+                .setMediaId(musicModel.id.toString())
+                .setUri(musicModel.streamUrl)
+                .build()
+            })
+            player?.prepare()
+        }
+    }
+
+    private fun playMusic(musicModel: MusicModel){
+        model.updateCurrentPosition(musicModel)
+        player?.seekTo(model.currentPosition,0)
+        player?.play()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        player?.pause()
+        view?.removeCallbacks(updateSeekRunnable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        _binding = null
+        player?.release()
+        view?.removeCallbacks(updateSeekRunnable)
+    }
+
+    companion object {
+        fun newInstance() : PlayerFragment {
+            return PlayerFragment()
+        }
+    }
 }
