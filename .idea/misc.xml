@@ -3,10 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/drawable/ic_baseline_mic_24.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/drawable/ic_baseline_mic_off_24.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/drawable/player_seek_background.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/drawable/player_seek_thumb.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.134765625" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout-w936dp/activity_login.xml" value="0.23958333333333334" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/activity_login.xml" value="0.18" />
         <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/activity_register.xml" value="0.15462962962962962" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/fragment_music_search.xml" value="0.25" />
         <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/fragment_player.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/item_music.xml" value="0.25" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/login_main.xml" value="0.30185185185185187" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/RapstarMusicApp/app/src/main/res/layout/login_main.xml" value="0.1" />
       </map>
     </option>
   </component>
@@ -15,5 +25,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
+    </option>
   </component>
 </project>

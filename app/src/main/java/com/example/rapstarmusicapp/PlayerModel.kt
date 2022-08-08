@@ -22,7 +22,7 @@ data class PlayerModel(
     fun nextMusic() : MusicModel?{
         if(playMusicList.isEmpty()) return null
 
-        currentPosition = if ((currentPosition -1) < 0) playMusicList.lastIndex else currentPosition - 1
+        currentPosition = if ((currentPosition +1) == playMusicList.size) 0 else currentPosition + 1
         return playMusicList[currentPosition]
     }
     fun currentMusicModel(): MusicModel? {

@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.rapstarmusicapp.MusicAdapter
 import com.example.rapstarmusicapp.PlayerModel
 import com.example.rapstarmusicapp.R
@@ -74,10 +76,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             override fun onStartTrackingTouch(seekbar: SeekBar?) {
             }
 
-            override fun onStopTrackingTouch(seekbar: SeekBar?) {
-                if (seekbar != null) {
-                    player?.seekTo(seekbar.progress * 1000L)
-                }
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                player?.seekTo(seekBar.progress * 1000L)
             }
         })
     }
@@ -89,8 +89,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             if(player.isPlaying){
                 player.pause()
             } else {
-                player.play()
-            }
+                player.play()}
         }
         binding.skipNextImageView. setOnClickListener{
             val nextMusic = model.nextMusic() ?: return@setOnClickListener
@@ -133,8 +132,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 updatePlayerView(model.currentMusicModel())
             }
 
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                super.onPlaybackStateChanged(playbackState)
+            override fun onPlaybackStateChanged(state: Int) {
+                super.onPlaybackStateChanged(state)
 
                 updateSeek()
             }
@@ -142,7 +141,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun updatePlayerView(currentMusicModel: MusicModel?) {
+        currentMusicModel ?: return
 
+        binding.trackTextView.text = currentMusicModel.track
+        binding.artistTextView.text = currentMusicModel.artist
+
+        Glide.with(binding.coverImageView.context)
+            .load(currentMusicModel.coverUrl)
+            .into(binding.coverImageView)
     }
 
     private fun updateSeek() {
@@ -162,11 +168,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun updateSeekUi(duration: Long, position: Long) {
-        binding.playerSeekBar.max = (duration /1000).toInt()
+        binding.playListSeekBar.max = (duration /1000).toInt()
         binding.playListSeekBar.progress = (position / 1000).toInt()
 
         binding.playerSeekBar.max = (duration/1000).toInt()
-        binding.playerSeekBar.progress = (duration / 1000).toInt()
+        binding.playerSeekBar.progress = (position / 1000).toInt()
 
         binding.playTimeTextView.text = String.format(
             "%02d:%02d",
@@ -181,19 +187,17 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun initRecyclerView() {
-        binding.playListImageView.setOnClickListener{
-
-            if(model.currentPosition == -1) return@setOnClickListener
-
-            binding.playListGroup.isVisible = binding.playerViewGroup.isVisible.also {
-                binding.playerViewGroup.isVisible = binding.playListGroup.isVisible
-            }
+        adapter = MusicAdapter {
+            playMusic(it)
         }
+
+        binding.playListRecyclerView.adapter = adapter
+        binding.playListRecyclerView.layoutManager = LinearLayoutManager(context)
     }
 
     private fun initPlayListButton() {
         binding.playListImageView.setOnClickListener{
-            if(model.currentPosition == 1) return@setOnClickListener
+            if(model.currentPosition == -1) return@setOnClickListener
 
             binding.playListGroup.isVisible = binding.playerViewGroup.isVisible.also{
                 binding.playerViewGroup.isVisible = binding.playListGroup.isVisible
