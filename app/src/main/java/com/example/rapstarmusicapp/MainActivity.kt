@@ -1,8 +1,10 @@
 package com.example.rapstarmusicapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.rapstarmusicapp.databinding.ActivityMainBinding
+import com.example.rapstarmusicapp.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-
 
         supportFragmentManager.beginTransaction()
             .replace(viewBinding.fragmentContainer.id, PlayerFragment.newInstance())
