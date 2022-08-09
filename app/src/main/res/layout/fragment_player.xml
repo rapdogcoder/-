@@ -234,12 +234,11 @@
         android:layout_width="121dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/player_view"
         app:layout_constraintStart_toEndOf="@+id/skip_next_image_view"
-        app:layout_constraintTop_toBottomOf="@+id/total_time_text_view"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
 
