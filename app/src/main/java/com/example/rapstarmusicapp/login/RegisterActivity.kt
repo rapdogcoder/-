@@ -7,7 +7,6 @@ import com.example.rapstarmusicapp.R
 import com.example.rapstarmusicapp.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
@@ -28,36 +27,16 @@ class RegisterActivity : AppCompatActivity() {
         register(id, password, name)
     }
     }
-    private fun register(email:String, password:String, name:String) {
+    fun register(email:String, password:String, name:String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) {
                     task ->
                 if(task.isSuccessful){
-                    Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                    saveData()
+                    Toast.makeText(this, "전송 성공", Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    Toast.makeText(this, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "전송 실패", Toast.LENGTH_SHORT).show()
                 }
             }
-    }
-
-    private fun saveData() {
-        Firebase.firestore.collection("users").document(Firebase.auth.uid!!).set(
-            mapOf(
-                "email" to viewBinding.emailText.toString(),
-                "name" to viewBinding.nameText.toString(),
-                "password" to viewBinding.passwordText.toString()
-            )
-        ).addOnCompleteListener {
-            task ->
-            if(task.isSuccessful){
-                Toast.makeText(this, "저장 성공", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                Toast.makeText(this, "저장 실패", Toast.LENGTH_SHORT).show()
-                Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

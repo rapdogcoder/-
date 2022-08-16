@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
         _viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        startActivity(Intent(this, LoginActivity::class.java))
+
         supportFragmentManager.beginTransaction()
             .replace(viewBinding.fragmentContainer.id, PlayerFragment.newInstance())
             .commit()
