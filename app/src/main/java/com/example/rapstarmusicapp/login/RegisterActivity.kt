@@ -12,7 +12,7 @@ import com.google.firebase.ktx.Firebase
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
     private var _viewBinding : ActivityRegisterBinding? = null
-    private val viewBinding : ActivityRegisterBinding = requireNotNull(_viewBinding)
+    private val viewBinding : ActivityRegisterBinding get() = requireNotNull(_viewBinding)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         _viewBinding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -32,9 +32,11 @@ class RegisterActivity : AppCompatActivity() {
             .addOnCompleteListener(this) {
                     task ->
                 if(task.isSuccessful){
-                    Toast.makeText(this, "전송 성공", Toast.LENGTH_SHORT).show()
+                    finish()
+                    Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT).show()
                 }
                 else{
+                    Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
                     Toast.makeText(this, "전송 실패", Toast.LENGTH_SHORT).show()
                 }
             }
